@@ -33,6 +33,10 @@ import org.springframework.util.StringUtils;
  *
  * <p>Does not support Method Injection, although it provides hooks for subclasses
  * to override to add Method Injection support, for example by overriding methods.
+ * <hr>
+ * 一个简单的实例化策略
+ * <p/>
+ * 不支持方法注入，虽然它提供子类的回调，已供添加方法注入支持
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -66,7 +70,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
-		if (!bd.hasMethodOverrides()) {
+			if (!bd.hasMethodOverrides()) {
 			Constructor<?> constructorToUse;
 			synchronized (bd.constructorArgumentLock) {
 				constructorToUse = (Constructor<?>) bd.resolvedConstructorOrFactoryMethod;

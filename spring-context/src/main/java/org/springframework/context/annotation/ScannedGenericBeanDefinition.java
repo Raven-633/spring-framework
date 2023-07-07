@@ -37,6 +37,9 @@ import org.springframework.util.Assert;
  * but distinguishes by type beans that have been <em>scanned</em> vs those that have
  * been otherwise registered or detected by other means.
  *
+ * <hr />
+ * {@link org.springframework.beans.factory.support.GenericBeanDefinition}类的扩展
+ *
  * @author Juergen Hoeller
  * @author Chris Beams
  * @since 2.5

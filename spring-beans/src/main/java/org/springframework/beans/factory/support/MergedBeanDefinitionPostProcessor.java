@@ -30,6 +30,8 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * <i>only</i> for definition properties which are actually intended for concurrent
  * modification. Essentially, this only applies to operations defined on the
  * {@link RootBeanDefinition} itself but not to the properties of its base classes.
+ * <hr/>
+ * 在运行时合并bean定义信息，
  *
  * @author Juergen Hoeller
  * @since 2.5

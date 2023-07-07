@@ -16,11 +16,13 @@
 
 package org.springframework.context.support;
 
+import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.nio.file.InvalidPathException;
 import java.util.HashMap;
 import java.util.Map;
 
+import groovy.util.logging.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.OS;
@@ -41,6 +43,7 @@ import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcess
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.DecoratingProxy;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
@@ -53,6 +56,7 @@ import org.springframework.core.io.ProtocolResolver;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.metrics.jfr.FlightRecorderApplicationStartup;
+import org.springframework.scripting.groovy.Log;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,6 +76,7 @@ import static org.mockito.Mockito.verify;
  * @author Stephane Nicoll
  * @author Sam Brannen
  */
+@Slf4j
 class GenericApplicationContextTests {
 
 	private final GenericApplicationContext context = new GenericApplicationContext();
@@ -256,6 +261,31 @@ class GenericApplicationContextTests {
 	void getResourceWithCustomResourceLoader() {
 		assertGetResourceSemantics(new FileSystemResourceLoader(), FileSystemResource.class);
 	}
+
+	/**
+	 * 使用ApplicationContext所实现的ResourcePatternResolver接口获取资源
+	 *
+	 * @throws IOException
+	 */
+	@Test
+	void getResource() throws IOException {
+		Resource[] resources = context.getResources("file:E:/书籍/*.pdf");
+		assertThat(resources).isNotEmpty();
+	}
+
+	/**
+	 * 给实现了ResourceLoaderAware接口的Bean注入ResourceLoader
+	 */
+	@Test
+	void resourceLoaderAware(){
+		context.registerBeanDefinition("resourceLoaderAwareBean",new RootBeanDefinition(ResourceLoaderAwareBean.class));
+		context.refresh();
+		ResourceLoaderAwareBean resourceLoaderAwareBean = context.getBean("resourceLoaderAwareBean", ResourceLoaderAwareBean.class);
+		assertThat(resourceLoaderAwareBean.getResourceLoader()).isNotNull();
+	}
+
+
+
 
 	private void assertGetResourceSemantics(ResourceLoader resourceLoader, Class<? extends Resource> defaultResourceType) {
 		if (resourceLoader != null) {
@@ -592,6 +622,24 @@ class GenericApplicationContextTests {
 				return new ByteArrayResource(("pong:" + location.substring(5)).getBytes(UTF_8));
 			}
 			return null;
+		}
+	}
+
+	/**
+	 *
+	 */
+	static class ResourceLoaderAwareBean implements ResourceLoaderAware {
+
+		private ResourceLoader resourceLoader;
+
+		@Override
+		public void setResourceLoader(ResourceLoader resourceLoader) {
+			System.out.println("执行ResourceLoaderAware接口的setResourceLoader方法，参数是：" + resourceLoader);
+			this.resourceLoader = resourceLoader;
+		}
+
+		public ResourceLoader getResourceLoader() {
+			return resourceLoader;
 		}
 	}
 

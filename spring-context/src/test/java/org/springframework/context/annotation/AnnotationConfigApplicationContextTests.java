@@ -51,6 +51,11 @@ import static org.springframework.util.StringUtils.uncapitalize;
 @SuppressWarnings("resource")
 class AnnotationConfigApplicationContextTests {
 
+	/**
+	 * 大体步骤：
+	 *      1. 扫描.class文件，然后根据.class文件生成BeanDefinition
+	 *
+	 */
 	@Test
 	void scanAndRefresh() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();

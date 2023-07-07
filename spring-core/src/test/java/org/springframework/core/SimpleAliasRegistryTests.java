@@ -31,6 +31,9 @@ class SimpleAliasRegistryTests {
 
 	private final SimpleAliasRegistry registry = new SimpleAliasRegistry();
 
+	/**
+	 * 别名的传递性，A别名B，B别名C，那么A别名C。
+	 */
 	@Test
 	void aliasChaining() {
 		registry.registerAlias("test", "testAlias");

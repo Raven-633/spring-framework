@@ -432,9 +432,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					logger.trace("Scanning " + resource);
 				}
 				try {
+					// start generation BeanDefinition
 					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
 					if (isCandidateComponent(metadataReader)) {
 						ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
+						// TODO: 2023/6/14 why to set source again.
 						sbd.setSource(resource);
 						if (isCandidateComponent(sbd)) {
 							if (debugEnabled) {

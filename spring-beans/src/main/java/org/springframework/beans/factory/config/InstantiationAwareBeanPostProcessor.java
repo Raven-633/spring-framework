@@ -33,6 +33,8 @@ import org.springframework.lang.Nullable;
  * <p><b>NOTE:</b> This interface is a special purpose interface, mainly for
  * internal use within the framework. It is recommended to implement the plain
  * {@link BeanPostProcessor} interface as far as possible.
+ * <hr/>
+ * {@link BeanPostProcessor}的一个子接口，用于在实例化之前、实例化之后（这时属性设置以及依赖注入前，还没调用set方法之前）进行回调。
  *
  * @author Juergen Hoeller
  * @author Rod Johnson

@@ -28,6 +28,8 @@ import org.springframework.lang.Nullable;
  *
  * <p>This is pulled out into a strategy as various approaches are possible,
  * including using CGLIB to create subclasses on the fly to support Method Injection.
+ * <hr/>
+ * BeanDefinition
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

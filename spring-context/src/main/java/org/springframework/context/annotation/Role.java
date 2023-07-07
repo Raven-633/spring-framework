@@ -49,7 +49,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Role {
+public @interface  Role {
 
 	/**
 	 * Set the role hint for the associated bean.
