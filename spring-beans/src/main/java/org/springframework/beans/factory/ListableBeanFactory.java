@@ -30,6 +30,9 @@ import org.springframework.lang.Nullable;
  * by name one by one as requested by clients. BeanFactory implementations that
  * preload all their bean definitions (such as XML-based factories) may implement
  * this interface.
+ * <p>
+ *     {@link BeanFactory}接口的扩展接口，提供了能够枚举出所有的Bean实例，而不是通过名称一个一个的找
+ * </p>
  *
  * <p>If this is a {@link HierarchicalBeanFactory}, the return values will <i>not</i>
  * take any BeanFactory hierarchy into account, but will relate only to the beans

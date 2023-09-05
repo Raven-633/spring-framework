@@ -102,6 +102,10 @@ import org.springframework.util.StringValueResolver;
  * respectively. Default implementations of those operations can be found in
  * {@link DefaultListableBeanFactory} and {@link AbstractAutowireCapableBeanFactory}.
  *
+ * <p>
+ *
+ * </p>
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Costin Leau
@@ -226,13 +230,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 返回指定Bean实例。
+	 * <p>
+	 *     这个Bean实例可以是单例的、原型的。
+	 * </p>
+	 * <hr>
 	 * Return an instance, which may be shared or independent, of the specified bean.
-	 * <hr/>
-	 * 返回一个单例Bean或是原型Bean。
-	 * <ol>
-	 *     <li>根据name，获取真实名称，因为这个name可能会是别名。</li>
-	 *     <li>从缓存中获取Bean实例</li>
-	 * </ol>
 	 * @param name the name of the bean to retrieve
 	 * @param requiredType the required type of the bean to retrieve
 	 * @param args arguments to use when creating a bean instance using explicit arguments
@@ -247,7 +250,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly)
 			throws BeansException {
 
-		//获取Bean的真实名称，因为name可能是别名 todo 或者有什么工厂前缀
+		//获取Bean的真实名字
 		String beanName = transformedBeanName(name);
 		Object beanInstance;
 
@@ -345,6 +348,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					}
 				}
 
+				//不同作用域不同的创建方式
 				//创建单例模式的Bean的实例对象
 				// Create bean instance.
 				if (mbd.isSingleton()) {
@@ -1264,6 +1268,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	//---------------------------------------------------------------------
 
 	/**
+	 * 返回bean的真实名字。
+	 * <p>
+	 *     去除工厂应用前缀、根据别名解析bean的真实名称。
+	 * </p>
+	 * <hr/>
 	 * Return the bean name, stripping out the factory dereference prefix if necessary,
 	 * and resolving aliases to canonical names.
 	 * @param name the user-specified name
@@ -1814,10 +1823,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 根据给定的bean实例获取对象。
+	 * <p>
+	 *     返回的对象会是bean实例自身或是FactoryBean创建的对象。
+	 * </p>
+	 * <hr/>
 	 * Get the object for the given bean instance, either the bean
 	 * instance itself or its created object in case of a FactoryBean.
-	 * <hr/>
-	 * 如果给定的bean实例是FactoryBean，那么返回的对象就是FactoryBean创建的。否则返回自身。
+	 *
 	 * @param beanInstance the shared bean instance
 	 * @param name the name that may include factory dereference prefix
 	 * @param beanName the canonical bean name
@@ -1838,6 +1851,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			if (mbd != null) {
 				mbd.isFactoryBean = true;
 			}
+			// 返回工厂Bean
 			return beanInstance;
 		}
 

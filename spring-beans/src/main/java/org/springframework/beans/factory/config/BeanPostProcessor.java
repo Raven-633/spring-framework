@@ -58,6 +58,11 @@ import org.springframework.lang.Nullable;
 public interface BeanPostProcessor {
 
 	/**
+	 * 在bean的初始化前（）调用（此时bean已实例化）。
+	 * <p>
+	 *     此时bean已经填充了属性。
+	 * </p>
+	 * <hr/>
 	 * Apply this {@code BeanPostProcessor} to the given new bean instance <i>before</i> any bean
 	 * initialization callbacks (like InitializingBean's {@code afterPropertiesSet}
 	 * or a custom init-method). The bean will already be populated with property values.
@@ -92,6 +97,8 @@ public interface BeanPostProcessor {
 	 * @param beanName the name of the bean
 	 * @return the bean instance to use, either the original or a wrapped one;
 	 * if {@code null}, no subsequent BeanPostProcessors will be invoked
+	 * <hr/>
+	 * 在Bean的初始化后提供回调入口
 	 * @throws org.springframework.beans.BeansException in case of errors
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet
 	 * @see org.springframework.beans.factory.FactoryBean

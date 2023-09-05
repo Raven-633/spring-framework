@@ -26,6 +26,9 @@ import org.springframework.util.ClassUtils;
  * Factory for AOP proxies for programmatic use, rather than via declarative
  * setup in a bean factory. This class provides a simple way of obtaining
  * and configuring AOP proxy instances in custom user code.
+ * <p>
+ *     供编程使用，而不是通过在BeanFactory中声明步骤，AOP代理工厂，这个类提供一个简单的方式获取并配置AOP代理实例
+ * </p>
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

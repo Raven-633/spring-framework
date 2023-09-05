@@ -74,6 +74,11 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 解析构造函数或是工厂方法。
+ * <p>
+ *     通过给定的参数解析构造函数。
+ * </p>
+ * <hr/>
  * Delegate for resolving constructors and factory methods.
  *
  * <p>Performs constructor resolution through argument matching.
@@ -147,26 +152,35 @@ class ConstructorResolver {
 		ArgumentsHolder argsHolderToUse = null;
 		Object[] argsToUse = null;
 
+		//如果getBean方法调用的时候指定方法参数那么直接使用
 		if (explicitArgs != null) {
 			argsToUse = explicitArgs;
 		}
 		else {
+			//如果在getBean方法时候没有指定则尝试从配置文件中解析
 			Object[] argsToResolve = null;
+			//参数从缓存中获取
 			synchronized (mbd.constructorArgumentLock) {
 				constructorToUse = (Constructor<?>) mbd.resolvedConstructorOrFactoryMethod;
 				if (constructorToUse != null && mbd.constructorArgumentsResolved) {
 					// Found a cached constructor...
+					//从缓存中取
 					argsToUse = mbd.resolvedConstructorArguments;
 					if (argsToUse == null) {
+						//配置的构造函数
 						argsToResolve = mbd.preparedConstructorArguments;
 					}
 				}
 			}
+			//如果缓存中存在
 			if (argsToResolve != null) {
+				//解析参数类型，如给定方法的构造函数A(int,int)则通过此方法后就会把配置中的
+				//("1","1")转换为(1,1)
 				argsToUse = resolvePreparedArguments(beanName, mbd, bw, constructorToUse, argsToResolve);
 			}
 		}
 
+		//没有被缓存
 		if (constructorToUse == null || argsToUse == null) {
 			// Take specified constructors, if any.
 			Constructor<?>[] candidates = chosenCtors;
@@ -183,6 +197,7 @@ class ConstructorResolver {
 				}
 			}
 
+			//使用唯一的无参构造函数进行实例化
 			if (candidates.length == 1 && explicitArgs == null && !mbd.hasConstructorArgumentValues()) {
 				Constructor<?> uniqueCandidate = candidates[0];
 				if (uniqueCandidate.getParameterCount() == 0) {
@@ -196,6 +211,7 @@ class ConstructorResolver {
 				}
 			}
 
+			//存在多个构造函数或是没有无参的构造函数，需要解析要使用的构造函数
 			// Need to resolve the constructor.
 			boolean autowiring = (chosenCtors != null ||
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
@@ -206,6 +222,7 @@ class ConstructorResolver {
 				minNrOfArgs = explicitArgs.length;
 			}
 			else {
+				// 没有显示指定构造函数的参数
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
 				resolvedValues = new ConstructorArgumentValues();
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
@@ -382,6 +399,8 @@ class ConstructorResolver {
 	}
 
 	/**
+	 * 使用FactoryBean实例化bean。
+	 * <hr/>
 	 * Instantiate the bean using a named factory method. The method may be static, if the
 	 * bean definition parameter specifies a class, rather than a "factory-bean", or
 	 * an instance variable on a factory object itself configured using Dependency Injection.
@@ -390,8 +409,6 @@ class ConstructorResolver {
 	 * to match with the parameters. We don't have the types attached to constructor args,
 	 * so trial and error is the only way to go here. The explicitArgs array may contain
 	 * argument values passed in programmatically via the corresponding getBean method.
-	 * <hr/>
-	 * 使用FactoryBean实例化bean，
 	 * @param beanName the name of the bean
 	 * @param mbd the merged bean definition for the bean
 	 * @param explicitArgs argument values passed in programmatically via the getBean

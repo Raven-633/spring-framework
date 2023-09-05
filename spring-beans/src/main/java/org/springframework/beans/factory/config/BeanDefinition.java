@@ -23,6 +23,11 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
 /**
+ * BeanDefinition描述bean实例的信息。
+ * <p>
+ *     比如说bean实例的属性值、构造函数参数值等。
+ * <p/>
+ * <hr/>
  * A BeanDefinition describes a bean instance, which has property values,
  * constructor argument values, and further information supplied by
  * concrete implementations.

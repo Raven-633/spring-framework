@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+AbstractBeanFactory -> AbstractBeanFactory: doGetBean
+AbstractBeanFactory -> AbstractBeanFactory: transformedBeanName(name)
+AbstractBeanFactory -> AbstractBeanFactory: getSingleton(beanName)
+alt 存在缓存的bean
+AbstractBeanFactory -> AbstractBeanFactory: getObjectForBeanInstance(sharedInstance, name, beanName, null)
+else 不存在缓存的bean
+AbstractBeanFactory --> AbstractAutowireCapableBeanFactory: createBean
+note right: 已进行beanDefinition处理、依赖已处理
+AbstractAutowireCapableBeanFactory --> AbstractAutowireCapableBeanFactory: resolveBeforeInstantiation
+note right: InstantiationAwareBeanPostProcessor执行
+AbstractAutowireCapableBeanFactory --> AbstractAutowireCapableBeanFactory: doCreateBean
+AbstractAutowireCapableBeanFactory --> AbstractAutowireCapableBeanFactory: createBeanInstance
+note right: 对象已经实例化但并未进行属性填充
+AbstractAutowireCapableBeanFactory --> AbstractAutowireCapableBeanFactory: applyMergedBeanDefinitionPostProcessors
+note right: MergedBeanDefinitionPostProcessor执行
+AbstractAutowireCapableBeanFactory --> AbstractAutowireCapableBeanFactory: populateBean
+note right
+ 1. InstantiationAwareBeanPostProcessor的postProcessAfterInstantiation执行
+ 2. InstantiationAwareBeanPostProcessor的postProcessProperties执行
+end note
+AbstractAutowireCapableBeanFactory --> AbstractAutowireCapableBeanFactory: initializeBean
+note right
+1. invokeAwareMethods()
+2. applyBeanPostProcessorsBeforeInitialization()
+3. 初始化方法调用，如isInitializingBean的afterPropertiesSet()
+4. applyBeanPostProcessorsAfterInitialization()
+end note
+end
+AbstractBeanFactory -> AbstractBeanFactory: adaptBeanInstance(name, beanInstance, requiredType)
+@enduml

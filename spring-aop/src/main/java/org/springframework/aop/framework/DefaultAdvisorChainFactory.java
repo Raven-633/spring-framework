@@ -47,6 +47,19 @@ import org.springframework.lang.Nullable;
 @SuppressWarnings("serial")
 public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializable {
 
+	/**
+	 * <p>
+	 * 从提供的配置实例config中获取Advisor列表，遍历处理这些Advisor。如果是IntroductionAdvisor，
+	 * 则判断此Advisor能否应用到目标类TargetClass上。如果是PointCutAdvisor，则判断此Advisor能否应用到目标方法Method上。
+	 * 将满足条件的Advisor通过AdvisorAdaptor转化成拦截器列表来返回。
+	 * </p>
+	 *
+	 * @param config      the AOP configuration in the form of an Advised object
+	 * @param method      the proxied method
+	 * @param targetClass the target class (may be {@code null} to indicate a proxy without
+	 *                    target object, in which case the method's declaring class is the next best option)
+	 * @return
+	 */
 	@Override
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
 			Advised config, Method method, @Nullable Class<?> targetClass) {

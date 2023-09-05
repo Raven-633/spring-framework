@@ -21,6 +21,14 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
+ * <p>
+ *     http请求方式的枚举。
+ * </p>
+ * 支持从{@link HttpMethod}转换为{@link RequestMethod}<br/>
+ * 支持从{@link RequestMethod}转换为{@link HttpMethod}
+ * <p>
+ *
+ * </p>
  * Enumeration of HTTP request methods. Intended for use with the
  * {@link RequestMapping#method()} attribute of the {@link RequestMapping} annotation.
  *

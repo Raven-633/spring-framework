@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+interface HandlerMapping{
++ HandlerExecutionChain getHandler(...)
+}
+class WebApplicationObjectSupport{}
+interface Ordered{}
+interface BeanNameAware{}
+abstract AbstractHandlerMapping{
+{abstract} #Object getHandlerInternal(HttpServletRequest request)
+}
+note right of AbstractHandlerMapping::getHandlerInternal
+  在 UML 注释了此方法
+end note
+interface InitializingBean{}
+abstract AbstractHandlerMethodMapping{}
+note right of AbstractHandlerMethodMapping
+将Method作为Handler使用
+1. 通过实现InitializingBean来扫描并注册容器中所有的方法handler。
+2. 根据请求获取方法处理器：getHandlerInternal(...)
+end note
+abstract RequestMappingInfoHandlerMapping{}
+class RequestMappingHandlerMapping{
+
+}
+note right of RequestMappingHandlerMapping
+1. 创建请求与处理器方法的映射信息：getMappingForMethod(...)
+end note
+
+class HandlerExecutionChain{
+private final Object handler
+private final List<HandlerInterceptor> interceptorList
+}
+class HandlerMethod{}
+class RequestMappingInfo{}
+interface RequestCondition<T>{}
+abstract AbstractRequestCondition<T extends AbstractRequestCondition<T>>{}
+interface RequestMappingInfo{}
+RequestCondition <|-- RequestMappingInfo
+RequestCondition <|-- AbstractRequestCondition
+
+
+HandlerMapping <|-- AbstractHandlerMapping
+
+WebApplicationObjectSupport <|-- AbstractHandlerMapping
+ Ordered <|-- AbstractHandlerMapping
+ BeanNameAware <|-- AbstractHandlerMapping
+
+ AbstractHandlerMapping <|-- AbstractHandlerMethodMapping
+ InitializingBean <|-- AbstractHandlerMethodMapping
+
+ AbstractHandlerMethodMapping <|-- RequestMappingInfoHandlerMapping
+
+RequestMappingInfoHandlerMapping <|-- RequestMappingHandlerMapping
+@enduml

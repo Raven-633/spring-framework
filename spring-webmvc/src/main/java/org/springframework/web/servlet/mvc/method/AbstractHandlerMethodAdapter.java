@@ -27,6 +27,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.WebContentGenerator;
 
 /**
+ * 提供对{@link HandlerMethod}类型的处理器支持。
+ * <p>
+ *
+ * </p>
  * Abstract base class for {@link HandlerAdapter} implementations that support
  * handlers of type {@link HandlerMethod}.
  *

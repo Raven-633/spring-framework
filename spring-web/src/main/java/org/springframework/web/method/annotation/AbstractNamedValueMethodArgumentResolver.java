@@ -38,6 +38,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
+ * 请求参数、请求头和路径变量解析。
+ * <hr/>
  * Abstract base class for resolving method arguments from a named value.
  * Request parameters, request headers, and path variables are examples of named
  * values. Each may have a name, a required flag, and a default value.
@@ -166,6 +168,10 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 	protected abstract NamedValueInfo createNamedValueInfo(MethodParameter parameter);
 
 	/**
+	 * 如果没指定名字则取方法参数名
+	 * <p>
+	 *
+	 * </p>
 	 * Create a new NamedValueInfo based on the given NamedValueInfo with sanitized values.
 	 */
 	private NamedValueInfo updateNamedValueInfo(MethodParameter parameter, NamedValueInfo info) {

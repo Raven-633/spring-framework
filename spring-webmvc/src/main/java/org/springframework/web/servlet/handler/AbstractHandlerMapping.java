@@ -59,6 +59,11 @@ import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 /**
+ * {@link org.springframework.web.servlet.HandlerMapping}的基类。
+ * <p>
+ *     提供排序、默认处理器以及处理器拦截器。
+ * </p>
+ *
  * Abstract base class for {@link org.springframework.web.servlet.HandlerMapping}
  * implementations. Supports ordering, a default handler, and handler interceptors,
  * including handler interceptors mapped by path patterns.
@@ -493,6 +498,13 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	}
 
 	/**
+	 * <p>
+	 *     根据给定的请求寻找处理器，如果没有找到返回默认处理器并将处理器封装成{@link HandlerExecutionChain}。
+	 * </p>
+	 * <p>
+	 *     1. 提供默认的处理器
+	 *     2. 增加跨域配置
+	 * </p>
 	 * Look up a handler for the given request, falling back to the default
 	 * handler if no specific one is found.
 	 * @param request current HTTP request

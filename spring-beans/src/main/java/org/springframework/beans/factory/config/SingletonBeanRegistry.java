@@ -58,6 +58,14 @@ public interface SingletonBeanRegistry {
 	void registerSingleton(String beanName, Object singletonObject);
 
 	/**
+	 * 根据名称返回注册的单例（原始的）对象
+	 * <p>
+	 *
+	 * </p>
+	 * <p>
+	 *     注意：需要传真实的Bean名字
+	 * </p>
+	 * <hr/>
 	 * Return the (raw) singleton object registered under the given name.
 	 * <p>Only checks already instantiated singletons; does not return an Object
 	 * for singleton bean definitions which have not been instantiated yet.

@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+请求 -> DispatcherServlet: doService
+DispatcherServlet -> DispatcherServlet: doDispatch
+DispatcherServlet -> DispatcherServlet: getHandler
+DispatcherServlet -> DispatcherServlet: getHandlerAdapter
+DispatcherServlet -> HandlerExecutionChain: applyPreHandle
+DispatcherServlet -> HandlerAdapter: handle
+DispatcherServlet -> HandlerExecutionChain: applyPostHandle
+
+@enduml

@@ -52,6 +52,9 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 /**
+ * 请求和 {@link HandlerMethod}之间的映射。
+ * <li>通过实现{@link InitializingBean}来扫描并注册容器中所有的方法handler。</li>
+ *
  * Abstract base class for {@link HandlerMapping} implementations that define
  * a mapping between a request and a {@link HandlerMethod}.
  *
@@ -213,7 +216,11 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
+	 * <p>
+	 *     扫描容器中的bean，检测并注册处理器方法。
+	 * </p>
 	 * Scan beans in the ApplicationContext, detect and register handler methods.
+	 *
 	 * @see #getCandidateBeanNames()
 	 * @see #processCandidateBean
 	 * @see #handlerMethodsInitialized
@@ -267,6 +274,10 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
+	 * <p>
+	 *     根据带有{@link org.springframework.web.servlet.mvc.Controller}注解的bean寻找方法处理器。
+	 * </p>
+	 *
 	 * Look for handler methods in the specified handler bean.
 	 * @param handler either a bean name or an actual handler instance
 	 * @see #getMappingForMethod
@@ -571,6 +582,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		private final Map<T, MappingRegistration<T>> registry = new HashMap<>();
 
+		/**
+		 * 精确匹配
+		 */
 		private final MultiValueMap<String, T> pathLookup = new LinkedMultiValueMap<>();
 
 		private final Map<String, List<HandlerMethod>> nameLookup = new ConcurrentHashMap<>();
@@ -632,6 +646,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
 				validateMethodMapping(handlerMethod, mapping);
 
+				//获取精确匹配路径
 				Set<String> directPaths = AbstractHandlerMethodMapping.this.getDirectPaths(mapping);
 				for (String path : directPaths) {
 					this.pathLookup.add(path, mapping);
@@ -651,12 +666,17 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 				this.registry.put(mapping,
 						new MappingRegistration<>(mapping, handlerMethod, directPaths, name, corsConfig != null));
-			}
-			finally {
+			} finally {
 				this.readWriteLock.writeLock().unlock();
 			}
 		}
 
+		/**
+		 * mapping需要对应唯一handlerMethod.
+		 *
+		 * @param handlerMethod
+		 * @param mapping
+		 */
 		private void validateMethodMapping(HandlerMethod handlerMethod, T mapping) {
 			MappingRegistration<T> registration = this.registry.get(mapping);
 			HandlerMethod existingHandlerMethod = (registration != null ? registration.getHandlerMethod() : null);

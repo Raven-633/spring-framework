@@ -49,6 +49,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 /**
+ * 解析{@code @RequestBody}和{@code @ResponseBody}标记的方法参数或是返回值
+ * <hr/>
  * Resolves method arguments annotated with {@code @RequestBody} and handles return
  * values from methods annotated with {@code @ResponseBody} by reading and writing
  * to the body of the request or response with an {@link HttpMessageConverter}.

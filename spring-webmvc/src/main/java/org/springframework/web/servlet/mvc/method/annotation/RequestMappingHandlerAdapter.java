@@ -97,6 +97,11 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.WebUtils;
 
 /**
+ * 提供带有{@link RequestMapping @RequestMapping}注解的{@link HandlerMethod 处理器方法}的支持。
+ * <p>
+ *
+ * </p>
+ *
  * Extension of {@link AbstractHandlerMethodAdapter} that supports
  * {@link RequestMapping @RequestMapping} annotated {@link HandlerMethod HandlerMethods}.
  *

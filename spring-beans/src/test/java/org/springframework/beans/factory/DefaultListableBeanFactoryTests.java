@@ -55,6 +55,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 /**
+ * 测试属性填充和自动注入。
  * Tests properties population and autowire behavior.
  *
  * @author Rod Johnson
@@ -74,8 +75,9 @@ class DefaultListableBeanFactoryTests {
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
 		bd.setScope("");
 		bd.setInstanceSupplier(new TestBeanSupplier());
+		lbf.registerAlias("testBean","testBeanAlias");
 		lbf.registerBeanDefinition("testBean", bd);
-		TestBean testBean = lbf.getBean("testBean", TestBean.class);
+		TestBean testBean = lbf.getBean("testBeanAlias", TestBean.class);
 
 		//虽然在Supplier为对象设置了属性，当后续还会被DeanDefinition中的属性所覆盖
 		assertThat("BeanName:1".equals(testBean.getBeanName())).isFalse();

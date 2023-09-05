@@ -47,6 +47,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
+ * bean中某个方法信息的封装。
+ * <p>
+ *     用于方便的访问方法参数、返回值以及方法的注解。
+ * </p>
  * Encapsulates information about a handler method consisting of a
  * {@linkplain #getMethod() method} and a {@linkplain #getBean() bean}.
  * Provides convenient access to method parameters, the method return value,

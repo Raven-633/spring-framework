@@ -474,10 +474,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	//---------------------------------------------------------------------
 
 	/**
+	 * 这个类的核心方法：创建并填充bean实例、应用后置处理器。
+	 * <hr/>
 	 * Central method of this class: creates a bean instance,
 	 * populates the bean instance, applies post-processors, etc.
-	 * <hr/>
-	 * 创建Bean实例
 	 * @see #doCreateBean
 	 */
 	@Override
@@ -512,6 +512,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			//如果Bean配置了初始化前和初始化后的处理器，则试图返回一个需要创建Bean的代理对象
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
+			// InstantiationAwareBeanPostProcessor的postProcessBeforeInstantiation、postProcessAfterInstantiation调用
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -523,7 +524,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
-			//创建Bean的入口
+			//创建Bean的入口，能够走了这里证明了InstantiationAwareBeanPostProcessor的postProcessBeforeInstantiation链已执行
 			Object beanInstance = doCreateBean(beanName, mbdToUse, args);
 			if (logger.isTraceEnabled()) {
 				logger.trace("Finished creating instance of bean '" + beanName + "'");
@@ -542,12 +543,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 真正创建Bean的方法，在此之前{@link InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation(Class, String)}已调用
+	 * <hr/>
 	 * Actually create the specified bean. Pre-creation processing has already happened
 	 * at this point, e.g. checking {@code postProcessBeforeInstantiation} callbacks.
 	 * <p>Differentiates between default bean instantiation, use of a
 	 * factory method, and autowiring a constructor.
-	 * <hr/>
-	 * 真正创建Bean的方法
 	 * @param beanName the name of the bean
 	 * @param mbd the merged bean definition for the bean
 	 * @param args explicit arguments to use for constructor or factory method invocation
@@ -594,6 +595,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
 		//向容器中缓存单例模式的Bean对象，以防止循环引用
+		//是否需要提前曝光：单例&允许循环依赖&当前bean正在创建中，检测循环依赖
+		//在Spring中会有循环依赖的情况，例如，当A中含有B的属性，而B中又含有A的属性时就会构成一个循环依赖，此时如果A和B都是单例，那么在Spring中的处理方式就是当创建B的时候，
+		// 涉及自动注入A的步骤时，并不是直接去再次创建A，而是通过放入缓存中的ObjectFactory来创建实例，这样就解决了循环依赖的问题。
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
 		if (earlySingletonExposure) {
@@ -602,6 +606,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 						"' to allow for resolving potential circular references");
 			}
 			//这里是一个匿名内部类，为了防止循环引用，尽早持有对象的引用
+			//为了避免后期循环依赖，可以在bean初始化完成前将创建实例的ObjectFactory加入工厂
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
@@ -644,6 +649,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 							actualDependentBeans.add(dependentBean);
 						}
 					}
+					//因为bean创建后其所依赖的bean一定是创建的
+					//actualDependentBeans不为空表示当前bean创建后其依赖的bean却没有全部创建完，也就是说存在循环依赖
 					if (!actualDependentBeans.isEmpty()) {
 						throw new BeanCurrentlyInCreationException(beanName,
 								"Bean with name '" + beanName + "' has been injected into other beans [" +
@@ -1093,6 +1100,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 应用MergedBeanDefinitionPostProcessors。
+	 * <hr/>
 	 * Apply MergedBeanDefinitionPostProcessors to the specified bean definition,
 	 * invoking their {@code postProcessMergedBeanDefinition} methods.
 	 * @param mbd the merged bean definition for the bean
@@ -1107,6 +1116,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 应用InstantiationAwareBeanPostProcessor的postProcessBeforeInstantiation，如果返回不为null则应用postProcessAfterInstantiation。
+	 * <hr/>
 	 * Apply before-instantiation post-processors, resolving whether there is a
 	 * before-instantiation shortcut for the specified bean.
 	 * @param beanName the name of the bean
@@ -1155,10 +1166,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 创建实例使用工厂方法、构造函数注入或是简单的实例化。
+	 * <hr/>
 	 * Create a new instance for the specified bean, using an appropriate instantiation strategy:
 	 * factory method, constructor autowiring, or simple instantiation.
-	 * <hr/>
-	 * 为指定的Bean创建实例，创建实例的策略有工厂方法，构造器注入或是简单的实例化
 	 * @param beanName the name of the bean
 	 * @param mbd the bean definition for the bean
 	 * @param args explicit arguments to use for constructor or factory method invocation
@@ -1188,7 +1199,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
 		}
 
-		//实例化策略三：
+		// 重点：实例化策略三：
 		// Shortcut when re-creating the same bean...
 		boolean resolved = false;
 		boolean autowireNecessary = false;
@@ -1223,6 +1234,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// No special handling: simply use no-arg constructor.
+		// 通过反射或是CGlib生成对象
 		return instantiateBean(beanName, mbd);
 	}
 
@@ -1301,6 +1313,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 决定实例化bean所将要使用的构造函数。
 	 * Determine candidate constructors to use for the given bean, checking all registered
 	 * {@link SmartInstantiationAwareBeanPostProcessor SmartInstantiationAwareBeanPostProcessors}.
 	 * @param beanClass the raw class of the bean
@@ -1382,11 +1395,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 填充bean实例属性.
+	 * <p>
+	 *     为BeanWrapper的Bean实例填充属性，属性来源于Bean定义信息
+	 * <p/>
+	 * <hr/>
 	 * Populate the bean instance in the given BeanWrapper with the property values
 	 * from the bean definition.
-	 * <hr/>
-	 * 将Bean属性设置到生成的实例对象上
-	 * 为BeanWrapper的Bean实例填充属性，属性来源于Bean定义信息
 	 * @param beanName the name of the bean
 	 * @param mbd the bean definition for the bean
 	 * @param bw the BeanWrapper with bean instance
@@ -1774,12 +1789,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 
 	/**
+	 * 初始化给定的Bean实例，应用工厂回调函数，比如init方法和bean的后置处理
+	 * <hr/>
 	 * Initialize the given bean instance, applying factory callbacks
 	 * as well as init methods and bean post processors.
 	 * <p>Called from {@link #createBean} for traditionally defined beans,
 	 * and from {@link #initializeBean} for existing bean instances.
-	 * <hr/>
-	 * 初始化给定的Bean实例，应用工厂回调函数，比如init方法和bean的后置处理
 	 * @param beanName the bean name in the factory (for debugging purposes)
 	 * @param bean the new bean instance we may need to initialize
 	 * @param mbd the bean definition that the bean was created with
@@ -1832,6 +1847,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 *
+	 * <p>
+	 *
+	 * </p>
+	 * <hr/>
 	 * Give a bean a chance to react now all its properties are set,
 	 * and a chance to know about its owning bean factory (this object).
 	 * This means checking whether the bean implements InitializingBean or defines
@@ -1869,6 +1889,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 为给定的bean调用自定义的init方法。
+	 * <hr/>
 	 * Invoke the specified custom init method on the given bean.
 	 * Called by invokeInitMethods.
 	 * <p>Can be overridden in subclasses for custom resolution of init

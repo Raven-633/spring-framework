@@ -21,6 +21,11 @@ import org.springframework.beans.PropertyValues;
 import org.springframework.lang.Nullable;
 
 /**
+ * {@link BeanPostProcessor}的子接口，可以在bean实例化前（属性设置、依赖注入未发生）、实例化后做一些操作。
+ * <p>
+ *     取代默认的实例化方式，一些使用例子比如：创建代理对象、懒初始化对象或者注入一些字段。
+ * </p>
+ * <hr/>
  * Subinterface of {@link BeanPostProcessor} that adds a before-instantiation callback,
  * and a callback after instantiation but before explicit properties are set or
  * autowiring occurs.
@@ -33,8 +38,6 @@ import org.springframework.lang.Nullable;
  * <p><b>NOTE:</b> This interface is a special purpose interface, mainly for
  * internal use within the framework. It is recommended to implement the plain
  * {@link BeanPostProcessor} interface as far as possible.
- * <hr/>
- * {@link BeanPostProcessor}的一个子接口，用于在实例化之前、实例化之后（这时属性设置以及依赖注入前，还没调用set方法之前）进行回调。
  *
  * @author Juergen Hoeller
  * @author Rod Johnson
@@ -45,6 +48,11 @@ import org.springframework.lang.Nullable;
 public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
 	/**
+	 * Bean实例化前的操作。
+	 * <p>
+	 *     如果在postProcessBeforeInstantiation执行链中的某次执行返回非null将不再执行后续的postProcessBeforeInstantiation执行链，
+	 *     从而执行postProcessAfterInitialization执行链。
+	 * </p>
 	 * Apply this BeanPostProcessor <i>before the target bean gets instantiated</i>.
 	 * The returned bean object may be a proxy to use instead of the target bean,
 	 * effectively suppressing default instantiation of the target bean.
@@ -74,6 +82,8 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	}
 
 	/**
+	 * 在bean实例化后（构造函数或是工厂方法执行后）执行操作，但未进行Spring属性填充（属性设置或是主动注入）。
+	 * <hr/>
 	 * Perform operations after the bean has been instantiated, via a constructor or factory method,
 	 * but before Spring property population (from explicit properties or autowiring) occurs.
 	 * <p>This is the ideal callback for performing custom field injection on the given bean

@@ -124,6 +124,7 @@ class ResourceBundleMessageSourceTests {
 		}
 		Class<?> clazz = reloadable ?
 				(Class<?>) ReloadableResourceBundleMessageSource.class : ResourceBundleMessageSource.class;
+		//注册messageSource Bean
 		ac.registerSingleton("messageSource", clazz, pvs);
 		ac.refresh();
 

@@ -22,6 +22,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.lang.Nullable;
 
 /**
+ * <p>
+ *     请求和处理器对象之间的映射。
+ * </p>
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
  *

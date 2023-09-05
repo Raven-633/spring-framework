@@ -1,0 +1,10 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+AbstractHandlerMethodMapping -> AbstractHandlerMethodMapping: afterPropertiesSet
+AbstractHandlerMethodMapping -> AbstractHandlerMethodMapping: initHandlerMethods
+AbstractHandlerMethodMapping -> AbstractHandlerMethodMapping: processCandidateBean
+AbstractHandlerMethodMapping -> AbstractHandlerMethodMapping: handlerMethodsInitialized
+@enduml

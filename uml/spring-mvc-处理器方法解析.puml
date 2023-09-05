@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+DispatcherServlet -> DispatcherServlet: doService
+DispatcherServlet --> DispatcherServlet: doDispatch
+DispatcherServlet --> HandlerAdapter: handle
+HandlerAdapter -> AbstractHandlerMethodAdapter: handle
+AbstractHandlerMethodAdapter -> RequestMappingHandlerAdapter: handleInternal
+RequestMappingHandlerAdapter -> RequestMappingHandlerAdapter: invokeHandlerMethod
+RequestMappingHandlerAdapter -> ServletInvocableHandlerMethod: invokeAndHandle
+ServletInvocableHandlerMethod -> InvocableHandlerMethod: invokeForRequest
+InvocableHandlerMethod -> InvocableHandlerMethod: getMethodArgumentValues
+note right: 获取HandlerMethod方法入参
+InvocableHandlerMethod -> HandlerMethodArgumentResolverComposite: resolveArgument
+HandlerMethodArgumentResolverComposite -> HandlerMethodArgumentResolver: resolveArgument
+note right: 一个一个解析方法入参
+@enduml
