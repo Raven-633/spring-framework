@@ -426,6 +426,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		return result;
 	}
 
+	/**
+	 *
+	 * @param existingBean the existing bean instance
+	 * @param beanName the name of the bean, to be passed to it if necessary
+	 * (only passed to {@link BeanPostProcessor BeanPostProcessors};
+	 * can follow the {@link #ORIGINAL_INSTANCE_SUFFIX} convention in order to
+	 * enforce the given instance to be returned, i.e. no proxies etc)
+	 * @return
+	 * @throws BeansException
+	 */
 	@Override
 	public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
 			throws BeansException {
@@ -510,7 +520,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
-			//如果Bean配置了初始化前和初始化后的处理器，则试图返回一个需要创建Bean的代理对象
+			//InstantiationAwareBeanPostProcessor 如果Bean配置了初始化前和初始化后的处理器，则试图返回一个需要创建Bean的代理对象
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			// InstantiationAwareBeanPostProcessor的postProcessBeforeInstantiation、postProcessAfterInstantiation调用
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
@@ -607,7 +617,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 			//这里是一个匿名内部类，为了防止循环引用，尽早持有对象的引用
 			//为了避免后期循环依赖，可以在bean初始化完成前将创建实例的ObjectFactory加入工厂
-			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
+				addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
 		// Initialize the bean instance.
@@ -615,7 +625,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		//这个exposeObject对象在初始化完成之后返回依赖注入完成后的Bean
 		Object exposedObject = bean;
 		try {
-			//将Bean实例对象封装，并且将在Bean定义中配置的属性值赋给实例对象
+			//将Bean实例对象封装，并且将在Bean定义中配置的属性值赋给实例对象 完成了bean的实例化
 			populateBean(beanName, mbd, instanceWrapper);
 			//初始化Bean对象，会调用一些Aware接口方法、Bean的后置处理器，以及Bean的初始化方法
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
@@ -1116,7 +1126,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
-	 * 应用InstantiationAwareBeanPostProcessor的postProcessBeforeInstantiation，如果返回不为null则应用postProcessAfterInstantiation。
+	 * <p>
+	 *     应用InstantiationAwareBeanPostProcessor的postProcessBeforeInstantiation。
+	 * </p>
+	 * <p>
+	 *     如果postProcessBeforeInstantiation返回不为null则中断执行链并应用postProcessAfterInstantiation。
+	 * </p>
+	 *
 	 * <hr/>
 	 * Apply before-instantiation post-processors, resolving whether there is a
 	 * before-instantiation shortcut for the specified bean.
@@ -1429,6 +1445,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 
+		//应用实例化的后置处理器
 		// Give any InstantiationAwareBeanPostProcessors the opportunity to modify the
 		// state of the bean before properties are set. This can be used, for example,
 		// to support styles of field injection.
@@ -1459,6 +1476,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (pvs == null) {
 				pvs = mbd.getPropertyValues();
 			}
+			//应用实例化的属性处理
 			for (InstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().instantiationAware) {
 				PropertyValues pvsToUse = bp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);
 				if (pvsToUse == null) {

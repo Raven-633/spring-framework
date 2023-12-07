@@ -21,7 +21,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
 /**
- * 访问Spring bean容器的基础接口。
+ * 访问Spring bean容器的基础接口。提供根据bean名、类型获取bean。
  * <hr/>
  * The root interface for accessing a Spring bean container.
  *

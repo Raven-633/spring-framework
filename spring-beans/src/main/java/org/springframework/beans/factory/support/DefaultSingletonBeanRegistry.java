@@ -38,6 +38,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
+ * 通用的共享的bean实例注册，实例了{@link org.springframework.beans.factory.config.SingletonBeanRegistry}接口。可以注册被共享的单例bean、可以通过bean名获取bean
  * Generic registry for shared bean instances, implementing the
  * {@link org.springframework.beans.factory.config.SingletonBeanRegistry}.
  * Allows for registering singleton instances that should be shared
@@ -75,7 +76,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 
 	/**
-	 * 单例对象缓存Map，bean名到对象的映射。
+	 * 已经创建了的单例对象缓存Map，bean名到对象的映射。
 	 * <p>
 	 *
 	 * </p>
@@ -166,6 +167,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * <p>
+	 *
+	 * </p>
 	 * Add the given singleton factory for building the specified singleton
 	 * if necessary.
 	 * <p>To be called for eager registration of singletons, e.g. to be able to
@@ -184,6 +188,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		}
 	}
 
+	/**
+	 * <p>
+	 *     从缓存中获取bean
+	 * </p>
+	 *
+	 * @param beanName the name of the bean to look for
+	 * @return
+	 */
 	@Override
 	@Nullable
 	public Object getSingleton(String beanName) {
@@ -384,6 +396,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * <p>
+	 *     创建单例Bean对象之前的操作
+	 * </p>
+	 * <p>
+	 *     标记该Bean对象为正在创建中
+	 * </p>
 	 * Callback before singleton creation.
 	 * <p>The default implementation register the singleton as currently in creation.
 	 * @param beanName the name of the singleton about to be created
@@ -396,6 +414,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * <p>
+	 *     移除单例Bean对象创建中的状态
+	 * </p>
 	 * Callback after singleton creation.
 	 * <p>The default implementation marks the singleton as not in creation anymore.
 	 * @param beanName the name of the singleton that has been created

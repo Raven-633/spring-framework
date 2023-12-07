@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: initializeBean
+note right: 初始化给定的Bean实例
+group 初始化给定的Bean实例 [此时已完成bean实例化以及属性填充]
+AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: invokeAwareMethods(beanName, bean)
+AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName)
+AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: invokeInitMethods(beanName, wrappedBean, mbd);
+AbstractAutowireCapableBeanFactory -> AbstractAutowireCapableBeanFactory: applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName)
+end
+@enduml

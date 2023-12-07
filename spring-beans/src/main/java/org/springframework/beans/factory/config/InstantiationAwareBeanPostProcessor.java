@@ -103,6 +103,9 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	}
 
 	/**
+	 * <p>
+	 *     处理给定的属性值在进行属性填充前。
+	 * </p>
 	 * Post-process the given property values before the factory applies them
 	 * to the given bean.
 	 * <p>The default implementation returns the given {@code pvs} as-is.

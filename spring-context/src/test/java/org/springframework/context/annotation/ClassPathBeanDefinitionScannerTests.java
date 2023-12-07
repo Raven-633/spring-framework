@@ -28,10 +28,7 @@ import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.beans.factory.support.StaticListableBeanFactory;
+import org.springframework.beans.factory.support.*;
 import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation2.NamedStubDao2;
@@ -54,6 +51,14 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 public class ClassPathBeanDefinitionScannerTests {
 
 	private static final String BASE_PACKAGE = "example.scannable";
+
+	@Test
+	public void simpleScanTest(){
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		ClassPathBeanDefinitionScanner definitionScanner = new ClassPathBeanDefinitionScanner(beanFactory);
+		int beanCount = definitionScanner.scan(BASE_PACKAGE);
+		assertThat(beanCount).isGreaterThanOrEqualTo(12);
+	}
 
 
 	@Test

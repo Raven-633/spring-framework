@@ -49,6 +49,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 /**
@@ -227,6 +228,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 */
 	protected void initHandlerMethods() {
 		for (String beanName : getCandidateBeanNames()) {
+			// TODO: 2023/9/5 为什么需要判断这个前缀，这个前缀有什么作用
 			if (!beanName.startsWith(SCOPED_TARGET_NAME_PREFIX)) {
 				processCandidateBean(beanName);
 			}
@@ -235,6 +237,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
+	 * 是否考虑从父容器中获取所有bean名
+	 * <p></p>
 	 * Determine the names of candidate beans in the application context.
 	 * @since 5.1
 	 * @see #setDetectHandlerMethodsInAncestorContexts
@@ -247,6 +251,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	}
 
 	/**
+	 * <p>
+	 *     判断该bean是否是Handler并查找所有的HandleMethod
+	 * </p>
 	 * Determine the type of the specified candidate bean and call
 	 * {@link #detectHandlerMethods} if identified as a handler type.
 	 * <p>This implementation avoids bean creation through checking

@@ -55,7 +55,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 /**
- * 测试属性填充和自动注入。
+ * <p>测试属性填充和自动注入。</p>
  * Tests properties population and autowire behavior.
  *
  * @author Rod Johnson

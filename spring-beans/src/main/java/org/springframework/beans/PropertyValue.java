@@ -23,6 +23,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * <p>
+ *     一个bean属性的描述信息以及值。
+ * </p>
  * Object to hold information and value for an individual bean property.
  * Using an object here, rather than just storing all properties in
  * a map keyed by property name, allows for more flexibility, and the

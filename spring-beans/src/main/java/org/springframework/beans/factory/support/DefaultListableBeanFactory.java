@@ -85,7 +85,17 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Spring's default implementation of the {@link ConfigurableListableBeanFactory}
+ * 由spring提供的{@link ConfigurableListableBeanFactory}和{@link BeanDefinitionRegistry}接口的默认实现，
+ * 是一个基于bean定义信息元数据的成熟的bean工厂并且可以通过后置处理器进行扩展。
+ *
+ * <p>用法：首先在访问bean之前要注册bean定义信息。在本地bean定义信息表中通过名称去查询bean是一种高效的方式。
+ *
+ * <p>注意：读取指定格式的bean定义信息分别有不同的实现而不是使用同一个子类，可以看例子{@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}。
+ *
+ * <p>对于{@link org.springframework.beans.factory.ListableBeanFactory}接口的另一种实现，也可以看{@link StaticListableBeanFactory}，
+ * 这个实现管理存在的bean实例而不是基于bean定义信息去创建bean实例
+ *
+ * <p>Spring's default implementation of the {@link ConfigurableListableBeanFactory}
  * and {@link BeanDefinitionRegistry} interfaces: a full-fledged bean factory
  * based on bean definition metadata, extensible through post-processors.
  *

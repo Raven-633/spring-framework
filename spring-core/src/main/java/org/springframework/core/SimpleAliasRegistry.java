@@ -203,9 +203,13 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	}
 
 	/**
+	 * <p>
+	 *     解析bean的真实名称，如果从别名Map中获取不到就是真实名称
+	 * </p>
+	 *
 	 * Determine the raw name, resolving aliases to canonical names.
 	 * <hr/>
-	 * 根据别名解析，实际的名字，如A别名B，B别名C，那么C的真是名字就是A。
+	 * 根据别名解析，实际的名字，如A是B的别名，B是C的别名，那么C的真是名字就是A。
 	 * @param name the user-specified name
 	 * @return the transformed name
 	 */

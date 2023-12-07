@@ -4,7 +4,9 @@
 autonumber
 
 AbstractHandlerMethodMapping -> AbstractHandlerMethodMapping: afterPropertiesSet
+note right: 实现InitializingBean接口
 AbstractHandlerMethodMapping -> AbstractHandlerMethodMapping: initHandlerMethods
+note right:
 AbstractHandlerMethodMapping -> AbstractHandlerMethodMapping: processCandidateBean
 AbstractHandlerMethodMapping -> AbstractHandlerMethodMapping: handlerMethodsInitialized
 @enduml

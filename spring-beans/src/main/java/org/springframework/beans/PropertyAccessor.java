@@ -22,6 +22,9 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
 
 /**
+ * <p>
+ *     能够访问命名了的属性
+ * </p>
  * Common interface for classes that can access named properties
  * (such as bean properties of an object or fields in an object).
  *

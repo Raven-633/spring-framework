@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.beans.BeanWrapper</OriginalElement>
+  <nodes>
+    <node x="-149.0" y="64.0">org.springframework.beans.TypeConverterSupport</node>
+    <node x="-65.1521739130435" y="142.0">org.springframework.beans.AbstractPropertyAccessor</node>
+    <node x="100.9728260869565" y="64.0">org.springframework.beans.ConfigurablePropertyAccessor</node>
+    <node x="267.929347826087" y="220.0">org.springframework.context.annotation.AnnotatedBeanDefinitionReader</node>
+    <node x="-99.1521739130435" y="220.0">org.springframework.beans.AbstractNestablePropertyAccessor</node>
+    <node x="208.8478260869565" y="142.0">org.springframework.beans.BeanWrapper</node>
+    <node x="194.0" y="293.0">org.springframework.context.annotation.AnnotationConfigRegistry</node>
+    <node x="322.92934782608694" y="-14.0">org.springframework.beans.PropertyAccessor</node>
+    <node x="-107.07065217391306" y="-14.0">org.springframework.beans.PropertyEditorRegistry</node>
+    <node x="137.92934782608694" y="-14.0">org.springframework.beans.TypeConverter</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.beans.ConfigurablePropertyAccessor" target="org.springframework.beans.TypeConverter" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="244.4728260869565" y="34.0" />
+      <point x="261.67934782608694" y="34.0" />
+      <point x="41.25" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.TypeConverterSupport" target="org.springframework.beans.TypeConverter" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="-36.0" y="44.0" />
+      <point x="179.17934782608694" y="44.0" />
+      <point x="-41.25" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.AbstractPropertyAccessor" target="org.springframework.beans.TypeConverterSupport" relationship="GENERALIZATION">
+      <point x="-63.5" y="-14.0" />
+      <point x="-1.652173913043498" y="117.0" />
+      <point x="-36.0" y="117.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.ConfigurablePropertyAccessor" target="org.springframework.beans.PropertyAccessor" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="244.4728260869565" y="34.0" />
+      <point x="416.929347826087" y="34.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.TypeConverterSupport" target="org.springframework.beans.PropertyEditorRegistry" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="-36.0" y="44.0" />
+      <point x="-50.82065217391306" y="44.0" />
+      <point x="-56.25" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.AbstractNestablePropertyAccessor" target="org.springframework.beans.AbstractPropertyAccessor" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.BeanWrapper" target="org.springframework.beans.ConfigurablePropertyAccessor" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="285.8478260869565" y="117.0" />
+      <point x="316.2228260869565" y="117.0" />
+      <point x="71.75" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.ConfigurablePropertyAccessor" target="org.springframework.beans.PropertyEditorRegistry" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="244.4728260869565" y="34.0" />
+      <point x="61.67934782608694" y="34.0" />
+      <point x="56.25" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.AbstractPropertyAccessor" target="org.springframework.beans.ConfigurablePropertyAccessor" relationship="REALIZATION">
+      <point x="63.5" y="-14.0" />
+      <point x="125.3478260869565" y="117.0" />
+      <point x="172.7228260869565" y="117.0" />
+      <point x="-71.75" y="14.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.5" showDependencies="false" x="416.929347826087" y="231.66666666666669" />
+  <SelectedNodes>
+    <node>org.springframework.context.annotation.AnnotatedBeanDefinitionReader</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

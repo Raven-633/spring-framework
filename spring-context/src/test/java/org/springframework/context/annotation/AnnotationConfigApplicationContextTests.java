@@ -37,6 +37,7 @@ import org.springframework.context.annotation6.Jsr330NamedForScanning;
 import org.springframework.context.testfixture.context.annotation.CglibConfiguration;
 import org.springframework.context.testfixture.context.annotation.LambdaBeanConfiguration;
 import org.springframework.core.ResolvableType;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import static java.lang.String.format;

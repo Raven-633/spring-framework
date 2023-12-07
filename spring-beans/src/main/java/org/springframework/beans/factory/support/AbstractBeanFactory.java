@@ -310,7 +310,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 			//创建的Bean是否需要进行类型验证，一般不需要
 			if (!typeCheckOnly) {
-				//想容器标记指定的Bean已经被创建
+				//向容器标记指定的Bean已经被创建
 				markBeanAsCreated(beanName);
 			}
 
@@ -350,6 +350,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 				//不同作用域不同的创建方式
 				//创建单例模式的Bean的实例对象
+				//正式开始创建Bean对象，标记该Bean处于创建中
 				// Create bean instance.
 				if (mbd.isSingleton()) {
 					//这里使用了一个匿名内部类创建Bean实例对象，并且注册给所有依赖的对象
@@ -1270,7 +1271,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/**
 	 * 返回bean的真实名字。
 	 * <p>
-	 *     去除工厂应用前缀、根据别名解析bean的真实名称。
+	 *     去除工厂应用前缀'&'、根据别名解析bean的真实名称。
 	 * </p>
 	 * <hr/>
 	 * Return the bean name, stripping out the factory dereference prefix if necessary,
@@ -1351,6 +1352,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 
 	/**
+	 * <p>
+	 *     返回合并后的bean定义信息，
+	 * </p>
 	 * Return a merged RootBeanDefinition, traversing the parent bean definition
 	 * if the specified bean corresponds to a child bean definition.
 	 * @param beanName the name of the bean to retrieve the merged definition for
